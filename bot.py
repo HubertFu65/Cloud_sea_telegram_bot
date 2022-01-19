@@ -1,20 +1,17 @@
 import telegram
 import requests
 import json
-#import schedule
 from apscheduler.schedulers.blocking import BlockingScheduler
-from time import sleep
 
 sched = BlockingScheduler()
-
 
 def telegram_bot_sendtext(bot_message):
     
     bot_token = ""
     bot_chatID = ""
 
-    bot_token= "***"
-    bot_chatID= "***"
+    bot_token= "5043716898:AAHFHCAWRNZx_Fbq_L_hMytAsjFSqOSZLnQ"
+    bot_chatID= "761438902"
 
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
 
@@ -22,7 +19,7 @@ def telegram_bot_sendtext(bot_message):
     response.json()
 
 
-@sched.scheduled_job('cron', hour=4, minute=8)
+@sched.scheduled_job('cron', hour="2,3")
 def check_cloudsea():
     r = requests.get("https://www.hko.gov.hk/out_photo/ascent/ascent_table.xml")
     data = json.loads(r.text)
@@ -44,7 +41,4 @@ def check_cloudsea():
     else:
         telegram_bot_sendtext("oh no next time")
         
-    
-#schedule.every().day.at("04:54").do(check_cloudsea)
-#schedule.run_pending()
 sched.start()
